@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday My Love</title>
+
+<style>
+
+/* Background Image */
+body{
+margin:0;
+font-family:Arial;
+text-align:center;
+background-image:url("background.png"); 
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+overflow-x:hidden;
+color:white;
+}
+
+/* Dark overlay */
+body::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.4);
+z-index:-1;
+}
+
+/* Title */
+h1{
+font-size:50px;
+margin-top:30px;
+}
+
+h2{
+margin-top:10px;
+}
+
+/* Photo */
+.birthday-surprise img{
+width:300px;
+border-radius:20px;
+margin:20px;
+box-shadow:0 10px 20px rgba(0,0,0,0.5);
+}
+
+/* Floating hearts */
+.heart{
+position:fixed;
+color:red;
+font-size:25px;
+animation:float 6s linear infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(100vh)}
+100%{transform:translateY(-10vh)}
+}
+
+/* Flying balloons */
+.balloon{
+position:fixed;
+bottom:-100px;
+font-size:40px;
+animation:balloonFly 8s linear infinite;
+}
+
+@keyframes balloonFly{
+0%{
+transform:translateY(0);
+opacity:1;
+}
+100%{
+transform:translateY(-110vh);
+opacity:0;
+}
+}
+
+/* Button */
+button{
+padding:15px 25px;
+font-size:18px;
+border:none;
+border-radius:10px;
+background:#ff4b6e;
+color:white;
+cursor:pointer;
+margin:20px;
+transition:0.3s;
+}
+
+button:hover{
+background:#ff2e57;
+transform:scale(1.1);
+}
+
+/* Love message */
+#message{
+display:none;
+font-size:22px;
+background:rgba(255,255,255,0.9);
+color:black;
+padding:20px;
+border-radius:15px;
+width:60%;
+margin:auto;
+}
+
+/* Game area */
+#game{
+margin-top:40px;
+}
+
+canvas{
+background:white;
+border-radius:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<audio >
+<source  src="romantic.mp3" controls autoplay >
+<source  src="romantic.wav" controls autoplay >
+music file is not working
+</audio>
+
+<h1>🎂 Happy Birthday My Love 🎂</h1>
+<h2>March 11 is Your Special Day 💖</h2>
+
+<div class="birthday-surprise">
+<img src="photo1.png">
+</div>
+
+<button onclick="showMessage()">💌 Click for a Secret Message</button>
+
+<div id="message">
+Happy Birthday my love ❤️ <br><br>
+You make my life beautiful and special.  
+I am so lucky to have you in my life.  
+May this year bring you happiness, success, and everything you dream of.  
+I love you always 💕
+</div>
+
+<h2>🎮 Catch the Hearts Game</h2>
+
+<div id="game">
+<canvas id="gameCanvas" width="400" height="400"></canvas>
+<p>Score: <span id="score">0</span></p>
+</div>
+
+<script>
+
+/* Floating hearts */
+function createHeart(){
+let heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="❤️";
+heart.style.left=Math.random()*100+"vw";
+heart.style.animationDuration=(3+Math.random()*5)+"s";
+document.body.appendChild(heart);
+
+setTimeout(()=>{heart.remove()},6000);
+}
+
+setInterval(createHeart,500);
+
+/* Flying balloons */
+function createBalloon(){
+let balloon=document.createElement("div");
+balloon.className="balloon";
+balloon.innerHTML="🎈";
+balloon.style.left=Math.random()*100+"vw";
+balloon.style.animationDuration=(6+Math.random()*4)+"s";
+document.body.appendChild(balloon);
+
+setTimeout(()=>{balloon.remove()},9000);
+}
+
+setInterval(createBalloon,1200);
+
+/* Secret message */
+function showMessage(){
+document.getElementById("message").style.display="block";
+alert("🎉 Surprise! I love you!");
+}
+
+/* Game */
+
+let canvas=document.getElementById("gameCanvas");
+let ctx=canvas.getContext("2d");
+
+let score=0;
+
+let heart={
+x:Math.random()*350,
+y:0,
+size:30
+};
+
+function drawHeart(){
+ctx.font="30px Arial";
+ctx.fillText("❤️",heart.x,heart.y);
+}
+
+canvas.addEventListener("click",function(e){
+
+let rect=canvas.getBoundingClientRect();
+let x=e.clientX-rect.left;
+let y=e.clientY-rect.top;
+
+if(x>heart.x && x<heart.x+30 && y>heart.y-30 && y<heart.y){
+
+score++;
+document.getElementById("score").innerText=score;
+
+heart.x=Math.random()*350;
+heart.y=0;
+
+}
+
+});
+
+function update(){
+
+ctx.clearRect(0,0,400,400);
+
+heart.y+=2;
+
+if(heart.y>400){
+heart.y=0;
+heart.x=Math.random()*350;
+}
+
+drawHeart();
+
+requestAnimationFrame(update);
+
+}
+
+update();
+
+</script>
+
+</body>
+</html>
